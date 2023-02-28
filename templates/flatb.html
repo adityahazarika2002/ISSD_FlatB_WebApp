@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FlatB Flatband Voltage Calculator</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+</head>
+
+<body style="background-color:rgb(86, 86, 86);">
+  <center>
+    <div class="rounded container m-3 p-3 bg-dark text-light">
+      <h1
+        style="font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+        FlatB: Flatband Voltage Calculator</h1>
+    </div>
+  </center>
+  <center>
+    <div class="container mb-2 pb-1 rounded" style="background-color: rgb(95, 95, 95);">
+      <div class="d-flex align-items-center row">
+        <div class="col-lg-2 m-2">
+          <div class="container mb-2">
+            <img src="/static/tulogo.png" class="img-fluid border-0 bg-transparent" alt="..."
+              style="width: 80%; max-width: 80%;">
+          </div>
+          <form action="/" method="post" class="form" enctype="multipart/form-data">
+            <div class="rounded container mb-2 pb-1" style="background-color:rgb(61, 61, 61);">
+
+              <h4 class="text-light mb-2">Input Parameters</h4>
+              <input type="number" class="form-control mb-2" placeholder="Enter T_ox (μm)" name="T_ox" id="T_ox"
+                required step="any" ;">
+              <input type="number" class="form-control mb-2" placeholder="Enter Phi_m (eV)" name="Phi_m" id="Phi_m"
+                required step="any">
+              <input type="number" class="form-control mb-2" placeholder="Epsilon_x (F/cm)" name="Epsilon_x"
+                id="Epsilon_x" required step="any">
+              <label for="select" class="text-light mb-2">Choose a parameter:</label>
+              <select class="form-select mb-2 text-dark" name="select" id="parameter" required>
+                <option selected disabled>Select option</option>
+                <option value="Phi_s" style='color: black'>Phi_s (eV)</option>
+                <option value="Na" style='color: black'>Na (cm^-3)</option>
+              </select>
+              <script></script>
+              <input type="number" class="form-control mb-2" placeholder="Enter Value" name="dipole" id="dipole"
+                required step="any">
+            </div>
+
+            <div class="rounded container mb-2 pb-1" style="background-color:rgb(61, 61, 61);">
+              <div class="container text-light">
+                <input type="radio" id="csv" name="IDradio" value="csv">
+                <label for="CSV">Use CSV</label><br>
+                <input type="file" class="form-control mb-2" name="file">
+
+              </div>
+            </div>
+            <div class="rounded container mb-2 pb-1" style="background-color:rgb(61, 61, 61);">
+              <div class="container text-light">
+                <input type="radio" id="function" name="IDradio" value="func">
+                <label for="function">Use Function</label><br>
+                <input type="number" class="form-control mb-2" placeholder="Upper Limit (μm)" name="upperlimit"
+                  id="upperlimit" step="any">
+                <input type="number" class="form-control mb-2" placeholder="Lower Limit (μm)" name="lowerlimit"
+                  id="lowerlimit" step="any">
+                <input type="number" class="form-control mb-2" placeholder="Number of Points" name="points" id="points"
+                  step="any">
+                <input type="text" class="form-control mb-2" placeholder="Enter Function" name="function" id="function"
+                  step="any">
+              </div>
+            </div>
+            <h6 class="text-warning m-3">{{message}}</h6>
+            <div class="col container">
+              <button type="submit" value="submit" class="btn btn-lg btn-primary m-2">Submit</button>
+              <a tabindex="0" class="bi bi-info-circle text-light ml-4" role="button" data-toggle="popover" data-trigger="focus" title="How to?"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-info-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533L8.93 6.588zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z"/>
+              </svg></a>              
+            </div>
+          </form>
+        </div>
+        <div class="col-lg-9 m-2">
+          <img src="/static/reference.jpg" class="img-fluid rounded m-4" alt="The main image" astyle="width: 80%;">
+        </div>
+      </div>
+    </div>
+    <div class="div-container rounded m-5 p-3" style="background-color:rgb(61, 61, 61); width: 80%;">
+      <div class="div-container rounded p-3" style="background-color:rgb(61, 61, 61);">
+        <h4 class="text-light mb-2">OUTPUT:</h4>
+        {%if flatb_volt%}
+        <div class="container mb-2 rounded text-light" style="background-color:rgb(61, 61, 61); width: fit-content;">
+          <p class="container" style="max-width:fit-content;">Flatband Voltage: {{flatb_volt}}</p>
+        </div>
+        {%endif%}
+        <img src="{{ image }}" class="img-fluid rounded" style="max-width: 100%;" alt="" />
+      </div>
+    </div>
+    </div>
+    </div>
+  </center>
+
+
+
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+    crossorigin="anonymous"></script>
+  <script>
+    var tooltipTrigerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTrigerList.map(function (tooltipTrigerEl) {
+      return new bootstrap.Tooltip(tooltipTrigerEl)
+    })
+
+    $(function () {
+      $('[data-toggle="popover"]').popover({ container: 'body', trigger: 'focus', boundary: "viewport", content: `1. The function should be in the form of "x".
+      \r 2. The function should be input as a python expression (Numpy as np can be used).
+      \r 3. Example: The input for function y = sin(x) would look like {np.sin(x)}.
+      \r 4. Example: The input for function y = x^2 would look like {x**2}.
+      \r 5. Example: The input for function y = e^-(x^2 + 2x + 1) would look like {np.exp(-(x*2 + 2x + 1))].`})
+    })</script>
+</body>
+
+</html>
+
+<script>
+  const csvRadio = document.getElementById('csv');
+  const functionRadio = document.getElementById('function');
+  const upperLimitInput = document.getElementById('upperlimit');
+  const lowerLimitInput = document.getElementById('lowerlimit');
+  const pointsInput = document.getElementById('points');
+  const functionInput = document.getElementById('function');
+  
+  functionRadio.addEventListener('click', function() {
+    if (functionRadio.checked) {
+      upperLimitInput.required = true;
+      lowerLimitInput.required = true;
+      pointsInput.required = true;
+      functionInput.required = true;
+    } else{
+      upperLimitInput.required = false;
+      lowerLimitInput.required = false;
+      pointsInput.required = false;
+      functionInput.required = false;
+    }
+  });
+
+  csvRadio.addEventListener('click', function() {
+    if (csvRadio.checked) {
+      upperLimitInput.required = false;
+      lowerLimitInput.required = false;
+      pointsInput.required = false;
+      functionInput.required = false;
+    } else{
+      upperLimitInput.required = true;
+      lowerLimitInput.required = true;
+      pointsInput.required = true;
+      functionInput.required = true;
+    }
+  });
+</script>
+  
